@@ -6,7 +6,9 @@ export type Entry = {
     frequency : string
     createdAt : Date
 }
-
+export type Props = {
+  readonly  entries: Entry[]
+  }
 
 export interface EntriesProps {
 
@@ -26,11 +28,9 @@ export type EntryFormProps = {
     onAddEntry : (entry : Entry) => Promise<void>
 }
 
-export type EntryListProps = {
-    entries : Entry[],
-    onDeleteEntry : (id : string) => Promise<void>
-    isLoading : boolean
-}
+
+
+  
 
 export type SummaryCardProps = {
     title : string,
@@ -39,4 +39,15 @@ export type SummaryCardProps = {
     borderColor : string,
     textColor : string
 }
+
+
+export interface EntryListProps {
+
+    readonly entries: ReadonlyArray<Entry>;
+  
+    readonly isLoading: boolean;
+  
+    readonly onDeleteEntry: (id: string) => void;
+  
+  }
 
