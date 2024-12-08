@@ -1,18 +1,18 @@
 import { prisma } from "@/utils/db";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function DELETE(request: Request, {params}: {params: {id: string}}) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const {id} = await params;
+    const { id } = params;
 
     await prisma.entry.delete({
-      where: {id}
-    })
+      where: { id }
+    });
 
-    return NextResponse.json({message: "es wurde gelöscht"}, {status: 200});
+    return NextResponse.json({ message: "es wurde gelöscht" }, { status: 200 });
 
-  }catch(error){
+  } catch (error) {
     console.error("Fehler beim Löschen:", error);
-    return NextResponse.json({error: "Fehler beim Löschen"}, {status: 500});
+    return NextResponse.json({ error: "Fehler beim Löschen" }, { status: 500 });
   }
 }
