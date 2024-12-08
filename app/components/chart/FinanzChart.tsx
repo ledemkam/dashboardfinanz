@@ -45,14 +45,14 @@ export default function FinanceChar({entries}: Readonly<Props>) {
     labels,
     datasets: [
       {
-        label: 'revenue',
+        label: 'Einnahmen',
         data: labels.map((category: string) => incomeByCategory[category] || 0),
         backgroundColor: colors.income,
         borderColor: colors.incomeBorder,
         borderWidth: 1
       },
       {
-        label: 'Dépenses',
+        label: 'Ausgaben',
         data: labels.map((category: string) => expenseByCategory[category] || 0),
         backgroundColor: colors.expense,
         borderColor: colors.expenseBorder,
