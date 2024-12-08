@@ -7,58 +7,54 @@ import EntryForm from "../components/form/EntryForm";
 import EntryList from "../components/shared/EntryList";
 
 export default function PageEntry() {
- const [entries, setEntries] = useState<Entry[]>([]);
- const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        fetchEntries()
-        },[])
- 
- const fetchEntries = async() => {
-    try {
-        const response = await fetch("/api/entries", {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
+    const [entries, setEntries] = useState<Entry[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+  
+    useEffect(()=> {
+      fetchEntries()
+    }, [])
+  
+    const fetchEntries = async ()=> {
+      try {
+        const response = await fetch('/api/entries')
         const data = await response.json()
-        setEntries(data)  
-    } catch (error) {
-        console.error("Error fetching entries", error)     
-    }finally{
+        setEntries(data)
+      }catch(error){
+        console.error('error fetching entries', error)
+      }finally {
         setIsLoading(false)
+      }
     }
-}
-
-
-const handleAddEntry = async(entry: Entry) => {
-    try {
-        const response = await fetch("/api/entries", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(entry)
+  
+    const handleAddEntry = async(entry: {type: string, amount: string, category: string, frequency: string}) => {
+      try {
+        const response = await fetch('/api/entries', {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(entry)
         })
+  
         if(response.ok) fetchEntries()
-    } catch (error) {
-        console.error("Error adding entry", error)
+  
+      }catch(error){
+        console.error('error adding entry', error)
+      }
     }
-}
-
-const handleDeleteEntry = async(id: string) => {
-    try {
+  
+    const handleDeleteEntry = async (id: string)=> {
+      try {
         const response = await fetch(`/api/entries/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            }
+          method: "DELETE"
         })
+  
         if(response.ok) fetchEntries()
-    } catch (error) {
-        console.error("Error deleting entry", error)
+  
+      }catch(error){
+        console.error('error deleting entry', error)
+      }
     }
-}
     
   return (
     <div className="min-h-screen p-8 bg-gray-100">
@@ -68,7 +64,7 @@ const handleDeleteEntry = async(id: string) => {
             Einträge verwalten
                     </h1>
            <EntryForm onAddEntry={handleAddEntry}/>
-           <EntryList entries={entries} isLoading={isLoading} onDeleteEntries={handleDeleteEntry}/>
+           <EntryList entries={entries} isLoading={isLoading} onDeleteEntry={handleDeleteEntry}/>
         </div>
     </div>
   )

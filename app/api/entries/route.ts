@@ -1,33 +1,36 @@
-import { prisma } from "@/utils/db";
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/utils/db";
 
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
 
-export async function POST(request: NextRequest){
-    try {
-        const body = await request.json()
+    const entry = await prisma.entry.create({
+      data: {
+        type: body.type,
+        amount: parseFloat(body.amount),
+        category: body.category,
+        frequency: body.frequency,
+      }
+    })
 
-        const entry = await prisma.entry.create({
-            data: {
-                type: body.type,
-                amount: parseFloat(body.amount),
-                category: body.category,
-                frequency: body.frequency,
-            }
-        })
-
-        return NextResponse.json(entry, {status: 201})
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({error: "error adding entry"}, {status: 500})
-    }
+    return NextResponse.json(entry, { status: 201 });
+    
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Fehler bei adding" }, { status: 500 });
+  }
 }
 
 export async function GET(){
-    try {
-        const entries = await prisma.entry.findMany()
-        return NextResponse.json(entries)
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({error: "error fetching entries"}, {status: 500})
-    }
-}
+  try {
+    const entries = await prisma.entry.findMany({
+      orderBy: {createdAt: 'desc'},
+    })
+
+    return NextResponse.json(entries, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Fehler beim list " }, { status: 500 });
+  }
+  }

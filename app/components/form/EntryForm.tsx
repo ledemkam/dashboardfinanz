@@ -1,35 +1,32 @@
-import { EntriesProps } from "@/types"
+import { EntryFormProps } from "@/types"
 import { useState } from "react"
 
-const EntryForm = ({onAddEntry}: EntriesProps) => {
+const EntryForm = ({onAddEntry}: EntryFormProps) => {
  const [formData, setFormData] = useState({
   type: "",
   amount: "",
   category: "",
   frequency: "One-time"
  })
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value
-    })
-  }
+ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>)=> {
+  const {name, value} = e.target
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const entry = {
-      ...formData,
-      amount: parseFloat(formData.amount)
-    }
-    onAddEntry(entry)
-    setFormData({
-      type: "",
-      amount: "",
-      category: "",
-      frequency: "One-time"
-    })
-  }
+  setFormData((prev) => ({
+    ...prev,
+    [name] : value
+  }))
+}
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  await onAddEntry(formData)
+  setFormData({
+    type: 'income',
+    amount: '',
+    category: '',
+    frequency: 'one_time',
+  })
+}
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -37,8 +34,8 @@ const EntryForm = ({onAddEntry}: EntriesProps) => {
         <div>
           <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-2">Typen</label>
           <select name="type" value={formData.type} onChange={handleChange} id="type" className="w-full p-2 border rounded-md">
-            <option value="income">Einkommen</option>
-            <option value="expense">Ausgegeben</option>
+            <option value="income">Einnahme</option>
+            <option value="expense">Ausgaben</option>
           </select>
         </div>
 

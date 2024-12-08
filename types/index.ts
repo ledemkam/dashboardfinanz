@@ -1,53 +1,30 @@
 export type Entry = {
-    id : string
-    type : string
-    amount : number
-    category : string
-    frequency : string
-    createdAt : Date
-}
-export type Props = {
-  readonly  entries: Entry[]
-  }
-
-export interface EntriesProps {
-
-    // other properties
-  
-    onAddEntry: (
-        entry: { 
-            type: string;
-            amount: number;
-            category: string; 
-            frequency: string
-        }) => void;
+    id: string 
+    type: string
+    amount: number
+    category: string
+    frequency: string
+    createdAt: Date
   }
   
-
-export type EntryFormProps = {
-    onAddEntry : (entry : Entry) => Promise<void>
-}
-
-
-
-  
-
-export type SummaryCardProps = {
-    title : string,
-    value : number | string,
-    isLoading : boolean,
-    borderColor : string,
-    textColor : string
-}
-
-
-export interface EntryListProps {
-
-    readonly entries: ReadonlyArray<Entry>;
-  
-    readonly isLoading: boolean;
-  
-    readonly onDeleteEntry: (id: string) => void;
-  
+  export type Props = {
+    entries: Entry[]
   }
-
+  
+  export interface EntryFormProps {
+    onAddEntry : (entry: {type: string, amount: string, category: string, frequency: string}) => Promise<void>
+  }
+  
+  export interface EntryListProps {
+    entries: Entry[];
+    isLoading: boolean;
+    onDeleteEntry: (id: string) => Promise<void>
+  }
+  
+  export type SummaryCardProps = {
+    title: string;
+    value: number | string;
+    isLoading: boolean;
+    borderColor: string;
+    textColor: string;
+  }
